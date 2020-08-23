@@ -50,9 +50,13 @@ module Tipi
       }
       
       def env(request)
-        Hash.new do |h, k|
+        env_hash = Hash.new do |h, k|
           h[k] = env_value_from_request(request, k)
         end
+
+        env_hash.merge!(
+          request.headers.transform_keys { |h| "HTTP_#{h.upcase.tr('-', '_')}" }
+        )
       end
 
       HTTP_HEADER_RE = /^HTTP_(.+)$/.freeze
