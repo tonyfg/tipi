@@ -13,7 +13,11 @@ module Tipi
       
       def gets; end
       
-      def read(length = nil, outbuf = nil); end
+      def read(length = nil, outbuf = nil);
+        body = @request.read
+        outbuf << body if outbuf
+        body
+      end
       
       def each(&block)
         @request.each_chunk(&block)
